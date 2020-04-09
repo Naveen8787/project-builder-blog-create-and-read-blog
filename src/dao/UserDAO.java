@@ -10,19 +10,22 @@ import utility.ConnectionManager;
 
 public class UserDAO implements UserDaoInterface {
 
-	public int signUp(User user) {
+	public int signUp(User user) throws ClassNotFoundException {
 		String INSERT_USERS_SQL = "INSERT INTO USERS(email, password)VALUES(?,?)";
 
 		int result = 0;
 		try
 		{
 			Connection connection = ConnectionManager.getConnection();
-			// Step 2:Create a statement using connection object
+			
+			//Create a statement using connection object
 			PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL);
 			preparedStatement.setString(1,user.getEmail());
 			preparedStatement.setString(2,user.getPassword());
-			System.out.println(preparedStatement);
-			// Step 3: Execute the query or update query
+			System.out.println("Sign up Successful");
+			//System.out.println(preparedStatement);
+			
+			//Execute the query or update query
 			result = preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e);
@@ -30,23 +33,23 @@ public class UserDAO implements UserDaoInterface {
 		return result;
 	}
 	
-	public boolean loginUser(User user) {
+	public boolean loginUser(User user) throws ClassNotFoundException {
 		boolean status = false;
 		try{
 			Connection connection = ConnectionManager.getConnection();
 		
-				// Step 2:Create a statement using connection object
+		//Create a statement using connection object
 		PreparedStatement preparedStatement = connection.prepareStatement("select * from users where email = ? and password = ? ");
 		
 			preparedStatement.setString(1, user.getEmail());
 			preparedStatement.setString(2, user.getPassword());
-
-			System.out.println(preparedStatement);
+			System.out.println("Login Successful");
+			//System.out.println(preparedStatement);
 			ResultSet rs = preparedStatement.executeQuery();
 			status = rs.next();
 
 		} catch (SQLException e) {
-			// process sql exception
+			//process sql exception
 			System.out.println(e);
 		}
 		return status;
